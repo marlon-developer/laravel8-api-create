@@ -17,11 +17,19 @@ class ApiController extends Controller
         return $array;
     }
 
-    public function readTodo()
+    public function readTodo($id)
     {
+        $array = ['error' => ''];
+        $todo  = Todo::find($id);
+
+        !$todo
+            ? $array['error'] = "A tarefa $id não existe!"
+            : $array['todo']  = $todo;
+
+        return $array;
     }
 
-    public function updateTodo()
+    public function updateTodo($id)
     {
     }
 
