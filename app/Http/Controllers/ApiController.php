@@ -66,14 +66,20 @@ class ApiController extends Controller
             return $array['error'] = $validator->messages();
         }
 
-        $todo        = new Todo();
-        $todo->title = $request->input('title');
-        $todo->save();
+        try {
+            $todo        = new Todo();
+            $todo->title = $request->input('title');
+            $todo->save();
+        } catch (\Exception $e) {
+            $array['error'] = "A tarefa não pode ser cadastrada!";
+        }
 
         return $array;
     }
 
-    public function deleteTodo()
+    public function deleteTodo($id)
     {
+        Todo::destroy($id);
+        return ['error' => ''];
     }
 }
