@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get(
+    '/test',
+    function () { 
+        $arr = [
+            'aa' => 10,
+            'bb' => 20,
+            'cc' => 30,
+            'dd' => 40,
+            'ee' => 50
+        ];
+        // view('welcome', compact('arr'));
+        view('welcome', ['arr']);
+    }
+);
