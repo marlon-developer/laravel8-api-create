@@ -13,7 +13,7 @@ class ApiController extends Controller
     {
         $array = ['error' => ''];
 
-        $todos                = Todo::paginate(2);
+        $todos                = Todo::paginate(10);
         $array['list']        = $todos->items();
         $array['currentPage'] = $todos->currentPage();
 

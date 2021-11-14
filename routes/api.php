@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get(
-    '/ping',
-    fn () => [
-        'pong' => true, 
-        // ['a'=>1, 'b'=>2, 'c'=>3]
-    ]
-);
+Route::get( '/ping', fn () => [ 'pong' => true, ] );
+
+Route::post( '/user', [AuthController::class, 'create']);
 
 Route::post('/todo', [ApiController::class, 'createTodo']);
 Route::get('/todos', [ApiController::class, 'readAllTodos']);
