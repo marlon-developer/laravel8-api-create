@@ -20,12 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get( '/ping', fn () => [ 'pong' => true, ] );
+Route::get('/ping', fn () => ['pong' => true]);
+Route::get('/unauthenticated', fn () => ['error' => 'Usuário não está logado'])->name('login');
 
-Route::post( '/user', [AuthController::class, 'create']);
+Route::post('/user', [AuthController::class, 'create']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::middleare('auth:api')->post('/auth/logout', [AuthController::class, 'logout']);
 
-Route::post('/todo', [ApiController::class, 'createTodo']);
+Route::middleare('auth:api')->post('/auth/me', [AuthController::class, 'me']);
+
+Route::middleare('auth:api')->post('/todo', [ApiController::class, 'createTodo']);
 Route::get('/todos', [ApiController::class, 'readAllTodos']);
 Route::get('/todo/{id}', [ApiController::class, 'readTodo']);
-Route::put('/todo/{id}', [ApiController::class, 'updateTodo']);
-Route::delete('/todo/{id}', [ApiController::class, 'deleteTodo']);
+Route::middleare('auth:api')->put('/todo/{id}', [ApiController::class, 'updateTodo']);
+Route::middleare('auth:api')->delete('/todo/{id}', [ApiController::class, 'deleteTodo']);
