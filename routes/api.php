@@ -22,9 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get( '/ping', fn () => [ 'pong' => true, ] );
 
-Route::post( '/user', [AuthController::class, 'create']);
+// Route::get('/unauthenticated', fn () => ['error' => 'Usuário Não Logado!'])->name('login');
 
-Route::post('/todo', [ApiController::class, 'createTodo']);
+Route::get('/unauthenticated', function () {
+    return [ 'error' => 'Usuário Não Logado'];
+})->name('login');
+
+Route::post( '/user', [AuthController::class, 'create']);
+Route::post( '/auth', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->post('/todo', [ApiController::class, 'createTodo']);
 Route::get('/todos', [ApiController::class, 'readAllTodos']);
 Route::get('/todo/{id}', [ApiController::class, 'readTodo']);
 Route::put('/todo/{id}', [ApiController::class, 'updateTodo']);

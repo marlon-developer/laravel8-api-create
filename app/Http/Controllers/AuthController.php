@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -26,6 +28,22 @@ class AuthController extends Controller
         $user->email    = $request->input('email');
         $user->password = password_hash($request->input('password'), PASSWORD_DEFAULT);
         $user->save();
+
+        return $array;
+    }
+
+    function login(Request $request)
+    {
+        $array = ['error' => ''];
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = User::where('email', $request->email)->first();
+
+            $array['token'] = $user->createToken(time().rand(0, 999))->plainTextToken;
+        } else {
+            $array['error'] = 'Email e/ou senha incorretos';
+
+        }
 
         return $array;
     }
